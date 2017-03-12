@@ -157,6 +157,7 @@
     <ClCompile Include="System\Graphics\Buffers\buffer.cpp" />
     <ClCompile Include="System\Graphics\Buffers\indexbuffer.cpp" />
     <ClCompile Include="System\Graphics\Buffers\vertexarray.cpp" />
+    <ClCompile Include="System\Graphics\Layers\groups.cpp" />
     <ClCompile Include="System\Graphics\Layers\layer.cpp" />
     <ClCompile Include="System\Graphics\Layers\tilelayer.cpp" />
     <ClCompile Include="System\Graphics\simple2Drenderer.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="System\Graphics\Buffers\buffer.h" />
     <ClInclude Include="System\Graphics\Buffers\indexbuffer.h" />
     <ClInclude Include="System\Graphics\Buffers\vertexarray.h" />
+    <ClInclude Include="System\Graphics\Layers\groups.h" />
     <ClInclude Include="System\Graphics\Layers\layer.h" />
     <ClInclude Include="System\Graphics\Layers\tilelayer.h" />
     <ClInclude Include="System\Graphics\renderable2D.h" />

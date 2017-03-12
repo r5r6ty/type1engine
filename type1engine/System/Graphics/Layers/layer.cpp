@@ -33,7 +33,7 @@ namespace Engine
 			m_renderer->Begin();
 			for (const Renderable2D *renderable : m_renderables)
 			{
-				m_renderer->Submit(renderable);
+				renderable->Submit(m_renderer);
 			}
 			m_renderer->End();
 			m_renderer->Flush();

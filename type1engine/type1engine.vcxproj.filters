@@ -51,6 +51,9 @@
     <ClCompile Include="System\Graphics\Layers\tilelayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="System\Graphics\Layers\groups.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System\Graphics\window.h">
@@ -96,6 +99,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="System\Graphics\Layers\tilelayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Graphics\Layers\groups.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

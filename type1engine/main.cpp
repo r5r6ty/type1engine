@@ -6,12 +6,17 @@
 #include "System/Graphics/batchrenderer2D.h"
 #include "System/Graphics/static_sprite.h"
 #include "System/Graphics/sprite.h"
-#include "System\Utils\timer.h"
-#include "System\Graphics\Layers\tilelayer.h"
+#include "System/Utils/timer.h"
+#include "System/Graphics/Layers/tilelayer.h"
+#include "System/Graphics/Layers/groups.h"
 
 #include <time.h>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
+
 #define BATCH_RENDERER 1
+#define TEST_50K_SPRITES 0
 
 int main()
 {
@@ -40,15 +45,30 @@ int main()
 	TileLayer layer(shader1);
 	TileLayer layer2(shader2);
 
-	for (float y = -9.0f; y < 9.0f; y += 0.1)
+#if TEST_50K_SPRITES
+	for (float y = -9.0f; y < 9.0f; y += 0.1f)
 	{
-		for (float x = -16.0f; x < 16.0f; x += 0.1)
+		for (float x = -16.0f; x < 16.0f; x += 0.1f)
 		{
 			layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.09f, 0.09f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
 		}
 	}
+#else
 
-	layer2.Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(4.0f, 4.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+	Group *group = new Group(glm::translate(glm::mat4(1.0f), glm::vec3(-5.0f, 1.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), (float)M_PI / 180 * 45.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
+	group->Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(6.0f, 3.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+
+
+	Group *button = new Group(glm::translate(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.0f)) * glm::rotate(glm::mat4(1.0f), (float)M_PI / 180 * 45.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
+	button->Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(5.0f, 2.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+	button->Add(new Sprite(glm::vec2(0.5f, 0.5f), glm::vec2(3.0f, 1.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+	group->Add(button);
+
+	layer.Add(group);
+
+#endif
+
+	//layer2.Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(4.0f, 4.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
 
 	Timer time;
 	float timer = 0;
@@ -75,7 +95,7 @@ int main()
 		}
 
 		layer.render();
-		layer2.render();
+		//layer2.render();
 
 		window.Update();
 		frames++;
