@@ -71,16 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -163,6 +163,7 @@
     <ClCompile Include="System\Graphics\simple2Drenderer.cpp" />
     <ClCompile Include="System\Graphics\sprite.cpp" />
     <ClCompile Include="System\Graphics\static_sprite.cpp" />
+    <ClCompile Include="System\Graphics\texture.cpp" />
     <ClCompile Include="System\Graphics\window.cpp" />
     <ClCompile Include="System\Graphics\shader.cpp" />
   </ItemGroup>
@@ -179,14 +180,16 @@
     <ClInclude Include="System\Graphics\simple2Drenderer.h" />
     <ClInclude Include="System\Graphics\sprite.h" />
     <ClInclude Include="System\Graphics\static_sprite.h" />
+    <ClInclude Include="System\Graphics\texture.h" />
     <ClInclude Include="System\Graphics\window.h" />
     <ClInclude Include="System\Graphics\shader.h" />
     <ClInclude Include="System\Utils\fileutils.h" />
+    <ClInclude Include="System\Utils\image_load.h" />
     <ClInclude Include="System\Utils\timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="System\Graphics\shader.frag" />
-    <None Include="System\Graphics\shader.vert" />
+    <None Include="System\Shaders\shader.frag" />
+    <None Include="System\Shaders\shader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

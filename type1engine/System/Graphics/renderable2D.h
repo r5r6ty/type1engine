@@ -11,7 +11,7 @@ namespace Engine
 	struct VertexData
 	{
 		glm::vec3 vertex;
-		//glm::vec4 color;
+		glm::vec2 uv;
 		unsigned int color;
 	};
 
@@ -23,12 +23,14 @@ namespace Engine
 			glm::vec3 m_postition;
 			glm::vec2 m_size;
 			glm::vec4 m_color;
+			std::vector<glm::vec2> m_uv;
 		protected:
-			Renderable2D() {}
+			Renderable2D() { SetUVDefaults(); }
 		public:
 			Renderable2D(glm::vec3 postition, glm::vec2 size, glm::vec4 color)
 				: m_postition(postition), m_size(size), m_color(color)
 			{
+				SetUVDefaults();
 			}
 			virtual ~Renderable2D()
 			{
@@ -38,9 +40,18 @@ namespace Engine
 				renderer->Submit(this);
 			}
 			
-			inline const glm::vec3 GetPosition() const { return m_postition; };
-			inline const glm::vec2 GetSize() const { return m_size; };
-			inline const glm::vec4 GetColor() const { return m_color; };
+			inline const glm::vec3 &GetPosition() const { return m_postition; };
+			inline const glm::vec2 &GetSize() const { return m_size; };
+			inline const glm::vec4 &GetColor() const { return m_color; };
+			inline const std::vector<glm::vec2> &GetUV() const { return m_uv; };
+		private:
+			void SetUVDefaults()
+			{
+				m_uv.push_back(glm::vec2(0.0f, 0.0f));
+				m_uv.push_back(glm::vec2(0.0f, 1.0f));
+				m_uv.push_back(glm::vec2(1.0f, 1.0f));
+				m_uv.push_back(glm::vec2(1.0f, 0.0f));
+			}
 		};
 	}
 }

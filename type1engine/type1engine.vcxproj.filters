@@ -54,6 +54,9 @@
     <ClCompile Include="System\Graphics\Layers\groups.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="System\Graphics\texture.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System\Graphics\window.h">
@@ -104,9 +107,15 @@
     <ClInclude Include="System\Graphics\Layers\groups.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="System\Utils\image_load.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Graphics\texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="System\Graphics\shader.vert" />
-    <None Include="System\Graphics\shader.frag" />
+    <None Include="System\Shaders\shader.vert" />
+    <None Include="System\Shaders\shader.frag" />
   </ItemGroup>
 </Project>

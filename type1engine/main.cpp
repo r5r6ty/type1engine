@@ -9,6 +9,7 @@
 #include "System/Utils/timer.h"
 #include "System/Graphics/Layers/tilelayer.h"
 #include "System/Graphics/Layers/groups.h"
+#include "System/Graphics/texture.h"
 
 #include <time.h>
 
@@ -16,7 +17,7 @@
 #include <math.h>
 
 #define BATCH_RENDERER 1
-#define TEST_50K_SPRITES 0
+#define TEST_50K_SPRITES 1
 
 int main()
 {
@@ -27,8 +28,8 @@ int main()
 
 	Window window("Type 1 Engine", 960, 540);
 
-	Shader *shader1 = new Shader("System/Graphics/shader.vert", "System/Graphics/shader.frag");
-	Shader *shader2 = new Shader("System/Graphics/shader.vert", "System/Graphics/shader.frag");
+	Shader *shader1 = new Shader("System/Shaders/shader.vert", "System/Shaders/shader.frag");
+	//Shader *shader2 = new Shader("System/Shaders/shader.vert", "System/Shaders/shader.frag");
 	shader1->Enable();
 
 	//Shader.SetUniformMat4("vm_matrix", glm::lookAt(glm::vec3(0.0f, 0.0f, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
@@ -37,20 +38,22 @@ int main()
 	shader1->SetUniformMat4("ml_matrix", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f,0.0f,0.0f)));
 	shader1->SetUniform2f("light_pos", glm::vec2(0.0f, 0.0f));
 
-	shader2->Enable();
-	shader2->SetUniformMat4("pr_matrix", glm::ortho(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f));
-	shader2->SetUniformMat4("ml_matrix", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
-	shader2->SetUniform2f("light_pos", glm::vec2(0.0f, 0.0f));
+	//shader2->Enable();
+	//shader2->SetUniformMat4("pr_matrix", glm::ortho(0.0f, 16.0f, 0.0f, 9.0f, -1.0f, 1.0f));
+	//shader2->SetUniformMat4("ml_matrix", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+	//shader2->SetUniform2f("light_pos", glm::vec2(0.0f, 0.0f));
 
 	TileLayer layer(shader1);
-	TileLayer layer2(shader2);
+	//TileLayer layer2(shader2);
+
+
 
 #if TEST_50K_SPRITES
-	for (float y = -9.0f; y < 9.0f; y += 0.1f)
+	for (float y = -9.0f; y < 9.0f; y += 1.0f)
 	{
-		for (float x = -16.0f; x < 16.0f; x += 0.1f)
+		for (float x = -16.0f; x < 16.0f; x += 1.0f)
 		{
-			layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.09f, 0.09f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+			layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(1.0f, 1.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
 		}
 	}
 #else
@@ -69,6 +72,13 @@ int main()
 #endif
 
 	//layer2.Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(4.0f, 4.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+
+	glActiveTexture(GL_TEXTURE0);
+	Texture tex("111.bmp");
+	tex.Bind();
+
+	shader1->Enable();
+	shader1->SetUniform1i("tex", 0);
 
 	Timer time;
 	float timer = 0;
@@ -89,8 +99,8 @@ int main()
 
 			shader1->Enable();
 			shader1->SetUniform2f("light_pos", glm::vec2((float)(mx * 32.0f / window.GetWindowWidth()) - 16.0f, (float)(9.0f - my * 18.0f / (float)window.GetWindowHeight())));
-			shader2->Enable();
-			shader2->SetUniform2f("light_pos", glm::vec2((float)(mx * 32.0f / window.GetWindowWidth()) - 16.0f, (float)(9.0f - my * 18.0f / (float)window.GetWindowHeight())));
+			//shader2->Enable();
+			//shader2->SetUniform2f("light_pos", glm::vec2((float)(mx * 32.0f / window.GetWindowWidth()) - 16.0f, (float)(9.0f - my * 18.0f / (float)window.GetWindowHeight())));
 
 		}
 

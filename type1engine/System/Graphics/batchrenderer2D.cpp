@@ -25,6 +25,10 @@ namespace Engine
 			glBufferData(GL_ARRAY_BUFFER, RENDERER_BUFFER_SIZE, NULL, GL_DYNAMIC_DRAW);
 			glEnableVertexAttribArray(SHADER_VERTEX_INDEX);
 			glVertexAttribPointer(SHADER_VERTEX_INDEX, 3, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const void*)0);
+
+			glEnableVertexAttribArray(SHADER_UV_INDEX);
+			glVertexAttribPointer(SHADER_UV_INDEX, 2, GL_FLOAT, GL_FALSE, RENDERER_VERTEX_SIZE, (const void*)(offsetof(VertexData, VertexData::uv)));
+
 			glEnableVertexAttribArray(SHADER_COLOR_INDEX);
 			glVertexAttribPointer(SHADER_COLOR_INDEX, 4, GL_BYTE, GL_TRUE, RENDERER_VERTEX_SIZE, (const void*)(offsetof(VertexData, VertexData::color)));
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -57,6 +61,7 @@ namespace Engine
 			const glm::vec3 &position = renderable2D->GetPosition();
 			const glm::vec2 &size = renderable2D->GetSize();
 			const glm::vec4 &color = renderable2D->GetColor();
+			const std::vector<glm::vec2> &uv = renderable2D->GetUV();
 
 			int r = (int)(color.x * 255.0f);
 			int g = (int)(color.y * 255.0f);
@@ -66,18 +71,22 @@ namespace Engine
 			unsigned int c = a << 24 | b << 16 | g << 8 | r;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position, 1.0f);
+			m_buffer->uv = uv[0];
 			m_buffer->color = c;
 			m_buffer++;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position.x, position.y + size.y, position.z ,1.0f);
+			m_buffer->uv = uv[1];
 			m_buffer->color = c;
 			m_buffer++;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position.x + size.x, position.y + size.y, position.z, 1.0f);
+			m_buffer->uv = uv[2];
 			m_buffer->color = c;
 			m_buffer++;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position.x + size.x, position.y, position.z, 1.0f);
+			m_buffer->uv = uv[3];
 			m_buffer->color = c;
 			m_buffer++;
 
