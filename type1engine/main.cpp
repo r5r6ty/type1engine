@@ -1,12 +1,12 @@
 #include "System/Graphics/window.h"
 #include "System/Graphics/shader.h"
+#include "System/Utils/timer.h"
 #include "System/Graphics/Buffers/vertexarray.h"
 #include "System/Graphics/Buffers/indexbuffer.h"
 #include "System/Graphics/simple2Drenderer.h"
 #include "System/Graphics/batchrenderer2D.h"
 #include "System/Graphics/static_sprite.h"
 #include "System/Graphics/sprite.h"
-#include "System/Utils/timer.h"
 #include "System/Graphics/Layers/tilelayer.h"
 #include "System/Graphics/Layers/groups.h"
 #include "System/Graphics/texture.h"
@@ -46,14 +46,26 @@ int main()
 	TileLayer layer(shader1);
 	//TileLayer layer2(shader2);
 
-
+	Texture *textures[] =
+	{
+	new Texture("111.bmp"),
+	new Texture("112.bmp"),
+	new Texture("113.bmp")
+	};
 
 #if TEST_50K_SPRITES
 	for (float y = -9.0f; y < 9.0f; y += 1.0f)
 	{
 		for (float x = -16.0f; x < 16.0f; x += 1.0f)
 		{
-			layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(1.0f, 1.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+			if (rand() % 2 == 0)
+			{
+				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(1.0f, 1.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+			}
+			else
+			{
+				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(1.0f, 1.0f), textures[rand() % 3]));
+			}
 		}
 	}
 #else
@@ -73,12 +85,13 @@ int main()
 
 	//layer2.Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(4.0f, 4.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
 
-	glActiveTexture(GL_TEXTURE0);
-	Texture tex("111.bmp");
-	tex.Bind();
+	GLint texIDs[] =
+	{
+		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
+	};
 
 	shader1->Enable();
-	shader1->SetUniform1i("tex", 0);
+	shader1->SetUniform1iv("textures", texIDs, 10);
 
 	Timer time;
 	float timer = 0;
@@ -116,6 +129,12 @@ int main()
 			frames = 0;
 		}
 	}
+
+	for (int i = 0; i < 3; i++)
+	{
+		delete textures[i];
+	}
+	
 
 	return 0;
 }

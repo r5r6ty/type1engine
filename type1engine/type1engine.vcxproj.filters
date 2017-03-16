@@ -117,5 +117,17 @@
   <ItemGroup>
     <None Include="System\Shaders\shader.vert" />
     <None Include="System\Shaders\shader.frag" />
+    <None Include="FreeImage.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="111.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="112.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="113.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
 </Project>

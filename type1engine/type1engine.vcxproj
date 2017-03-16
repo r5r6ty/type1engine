@@ -188,8 +188,14 @@
     <ClInclude Include="System\Utils\timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FreeImage.dll" />
     <None Include="System\Shaders\shader.frag" />
     <None Include="System\Shaders\shader.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="111.bmp" />
+    <Image Include="112.bmp" />
+    <Image Include="113.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

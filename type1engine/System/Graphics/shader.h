@@ -19,7 +19,9 @@ namespace Engine
 			void Enable() const;
 			void Disable() const;
 
+			void SetUniform1fv(const GLchar *name, float *value, int count) const;
 			void SetUniform1i(const GLchar *name, GLint i) const;
+			void SetUniform1iv(const GLchar *name, int *value, int count) const;
 			void SetUniform2f(const GLchar *name, glm::vec2 f2f) const;
 			void SetUniform4f(const GLchar *name, glm::vec4 f4f) const;
 			void SetUniformMat4(const GLchar *name, glm::mat4 f4m) const;

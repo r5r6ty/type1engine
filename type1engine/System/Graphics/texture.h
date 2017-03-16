@@ -18,6 +18,7 @@ namespace Engine
 			void Bind() const;
 			void UnBind() const;
 
+			inline const GLuint GetTID() const { return m_TID; };
 			inline const unsigned int GetWidth() const { return m_width; };
 			inline const unsigned int GetHeight() const { return m_height; };
 		private:
