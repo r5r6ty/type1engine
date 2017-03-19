@@ -10,6 +10,7 @@
 #include "System/Graphics/Layers/tilelayer.h"
 #include "System/Graphics/Layers/groups.h"
 #include "System/Graphics/texture.h"
+#include "System/Graphics/label.h"
 
 #include <time.h>
 
@@ -18,6 +19,25 @@
 
 #define BATCH_RENDERER 1
 #define TEST_50K_SPRITES 1
+
+char *localeToUTF8(char *src)
+{
+	static char *buf = NULL;
+	if (buf)
+	{
+		free(buf);
+		buf = NULL;
+	}
+	wchar_t *unicode_buf;
+	int nRetLen = MultiByteToWideChar(CP_ACP, 0, src, -1, NULL, 0);
+	unicode_buf = (wchar_t*)malloc((nRetLen + 1) * sizeof(wchar_t));
+	MultiByteToWideChar(CP_ACP, 0, src, -1, unicode_buf, nRetLen);
+	nRetLen = WideCharToMultiByte(CP_UTF8, 0, unicode_buf, -1, NULL, 0, NULL, NULL);
+	buf = (char*)malloc(nRetLen + 1);
+	WideCharToMultiByte(CP_UTF8, 0, unicode_buf, -1, buf, nRetLen, NULL, NULL);
+	free(unicode_buf);
+	return buf;
+}
 
 int main()
 {
@@ -60,12 +80,17 @@ int main()
 		{
 			if (rand() % 2 == 0)
 			{
-				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(1.0f, 1.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
+				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f)));
+				//layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), glm::vec4(rand() % 1000 / 1000.0f, 0.0f, 0.0f, 1.0f)));
 			}
 			else
 			{
-				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(1.0f, 1.0f), textures[rand() % 3]));
+				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), textures[rand() % 3]));
 			}
+
+			//Label *fps = new Label("fps", glm::vec2(x, y), glm::vec2(1, 1), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+			//layer.Add(fps);
+
 		}
 	}
 #else
@@ -85,14 +110,25 @@ int main()
 
 	//layer2.Add(new Sprite(glm::vec2(0.0f, 0.0f), glm::vec2(4.0f, 4.0f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, 1.0f)));
 
+
+	//Label *fps = new Label(localeToUTF8("´ò±¬ºÌÃç¹·Í·£¡"), glm::vec2(-5, 0), glm::vec2(1, 1), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f));	
+	Group *group = new Group(glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)));
+	Label *fps = new Label("FPS: 0", glm::vec2(0, 0), glm::vec2(1, 1), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f));
+
+	group->Add(fps);
+
+	layer.Add(group);
+
+
 	GLint texIDs[] =
 	{
 		0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31
 	};
 
 	shader1->Enable();
-	shader1->SetUniform1iv("textures", texIDs, 10);
+	shader1->SetUniform1iv("textures", texIDs, 32);
 
+	
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
@@ -125,9 +161,15 @@ int main()
 		if (time.Elapsed() - timer > 1.0f)
 		{
 			timer += 1.0f;
+			char str[10];
+			sprintf_s(str, "FPS: %d", frames);
+
+			fps->m_Text = str;
 			printf("FPS: %i Sprites:\n", frames);
 			frames = 0;
 		}
+
+		group->m_transformationmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), time.Elapsed(), glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.5f, 0.0f));
 	}
 
 	for (int i = 0; i < 3; i++)

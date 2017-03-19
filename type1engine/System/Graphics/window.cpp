@@ -115,6 +115,9 @@ namespace Engine
 				return false;
 			}
 
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 			glfwSetKeyCallback(m_window, key_callback);
 
 			return true;

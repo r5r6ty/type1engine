@@ -28,10 +28,10 @@ namespace Engine
 			std::vector<glm::vec2> m_uv;
 			Texture *m_texture;
 		protected:
-			Renderable2D() { SetUVDefaults(); }
+			Renderable2D() :m_texture(nullptr) { SetUVDefaults(); }
 		public:
 			Renderable2D(glm::vec3 postition, glm::vec2 size, glm::vec4 color)
-				: m_postition(postition), m_size(size), m_color(color)
+				: m_postition(postition), m_size(size), m_color(color), m_texture(nullptr)
 			{
 				SetUVDefaults();
 			}
@@ -43,11 +43,11 @@ namespace Engine
 				renderer->Submit(this);
 			}
 			
-			inline const glm::vec3 &GetPosition() const { return m_postition; };
-			inline const glm::vec2 &GetSize() const { return m_size; };
-			inline const glm::vec4 &GetColor() const { return m_color; };
-			inline const std::vector<glm::vec2> &GetUV() const { return m_uv; };
-			inline const GLuint GetTID() const { return m_texture == nullptr ? 0 : m_texture->GetTID(); };
+			inline const glm::vec3 &GetPosition() const { return m_postition; }
+			inline const glm::vec2 &GetSize() const { return m_size; }
+			inline const glm::vec4 &GetColor() const { return m_color; }
+			inline const std::vector<glm::vec2> &GetUV() const { return m_uv; }
+			inline const GLuint GetTID() const { return m_texture ? m_texture->GetTID() : 0; }
 		private:
 			void SetUVDefaults()
 			{

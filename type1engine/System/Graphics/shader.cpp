@@ -83,7 +83,7 @@ namespace Engine
 			return glGetUniformLocation(m_shaderID, name);
 		}
 
-		void Shader::SetUniform1fv(const GLchar *name, float *value, int count) const const
+		void Shader::SetUniform1fv(const GLchar *name, float *value, int count) const
 		{
 			glUniform1fv(GetUniformLocation(name), count, value);
 		}
@@ -93,7 +93,7 @@ namespace Engine
 			glUniform1i(GetUniformLocation(name), i);
 		}
 
-		void Shader::SetUniform1iv(const GLchar *name, int *value, int count) const const
+		void Shader::SetUniform1iv(const GLchar *name, int *value, int count) const
 		{
 			glUniform1iv(GetUniformLocation(name), count, value);
 		}

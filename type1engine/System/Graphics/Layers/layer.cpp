@@ -35,6 +35,7 @@ namespace Engine
 			{
 				renderable->Submit(m_renderer);
 			}
+
 			m_renderer->End();
 			m_renderer->Flush();
 			m_shader->Disable();

@@ -57,6 +57,9 @@
     <ClCompile Include="System\Graphics\texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="System\Graphics\label.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System\Graphics\window.h">
@@ -113,6 +116,9 @@
     <ClInclude Include="System\Graphics\texture.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="System\Graphics\label.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="System\Shaders\shader.vert" />
@@ -129,5 +135,9 @@
     <Image Include="113.bmp">
       <Filter>资源文件</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="微软雅黑.ttf" />
+    <Font Include="Arial.ttf" />
   </ItemGroup>
 </Project>
