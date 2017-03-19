@@ -3,6 +3,7 @@
 
 To compile this code you need the following libraries.Put them with type1engine folder together.
  
+* freetype-gl-master
 * freetype-2.7
 * FreeImage
 * glm
