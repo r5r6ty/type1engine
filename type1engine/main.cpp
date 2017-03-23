@@ -55,7 +55,8 @@ int main()
 	new Texture("111.bmp"),
 	new Texture("112.bmp"),
 	new Texture("113.bmp"),
-	new Texture("001.png")
+	new Texture("001.png"),
+	new Texture("large.bmp")
 	};
 
 #if TEST_50K_SPRITES

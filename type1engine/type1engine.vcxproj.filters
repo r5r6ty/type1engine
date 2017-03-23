@@ -150,6 +150,12 @@
     <Image Include="113.bmp">
       <Filter>资源文件</Filter>
     </Image>
+    <Image Include="001.png">
+      <Filter>资源文件</Filter>
+    </Image>
+    <Image Include="large.bmp">
+      <Filter>资源文件</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="微软雅黑.ttf" />

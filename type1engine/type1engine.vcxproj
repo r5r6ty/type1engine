@@ -200,9 +200,11 @@
     <None Include="System\Shaders\shader.vert" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="001.png" />
     <Image Include="111.bmp" />
     <Image Include="112.bmp" />
     <Image Include="113.bmp" />
+    <Image Include="large.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="Arial.ttf" />
