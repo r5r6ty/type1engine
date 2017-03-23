@@ -11,6 +11,7 @@
 #include "System/Graphics/Layers/groups.h"
 #include "System/Graphics/texture.h"
 #include "System/Graphics/label.h"
+#include "System/Graphics/fontmanager.h"
 
 #include <time.h>
 
@@ -20,24 +21,7 @@
 #define BATCH_RENDERER 1
 #define TEST_50K_SPRITES 1
 
-char *localeToUTF8(char *src)
-{
-	static char *buf = NULL;
-	if (buf)
-	{
-		free(buf);
-		buf = NULL;
-	}
-	wchar_t *unicode_buf;
-	int nRetLen = MultiByteToWideChar(CP_ACP, 0, src, -1, NULL, 0);
-	unicode_buf = (wchar_t*)malloc((nRetLen + 1) * sizeof(wchar_t));
-	MultiByteToWideChar(CP_ACP, 0, src, -1, unicode_buf, nRetLen);
-	nRetLen = WideCharToMultiByte(CP_UTF8, 0, unicode_buf, -1, NULL, 0, NULL, NULL);
-	buf = (char*)malloc(nRetLen + 1);
-	WideCharToMultiByte(CP_UTF8, 0, unicode_buf, -1, buf, nRetLen, NULL, NULL);
-	free(unicode_buf);
-	return buf;
-}
+#if 1
 
 int main()
 {
@@ -70,7 +54,8 @@ int main()
 	{
 	new Texture("111.bmp"),
 	new Texture("112.bmp"),
-	new Texture("113.bmp")
+	new Texture("113.bmp"),
+	new Texture("001.png")
 	};
 
 #if TEST_50K_SPRITES
@@ -78,15 +63,14 @@ int main()
 	{
 		for (float x = -16.0f; x < 16.0f; x += 1.0f)
 		{
-			if (rand() % 2 == 0)
-			{
-				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f)));
-				//layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), glm::vec4(rand() % 1000 / 1000.0f, 0.0f, 0.0f, 1.0f)));
-			}
-			else
-			{
-				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), textures[rand() % 3]));
-			}
+			//if (rand() % 2 == 0)
+			//{
+				layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), Color_FloatToInt(glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f))));
+			//}
+			//else
+			//{
+			//	layer.Add(new Sprite(glm::vec2(x, y), glm::vec2(0.8f, 0.8f), textures[rand() % 4]));
+			//}
 
 			//Label *fps = new Label("fps", glm::vec2(x, y), glm::vec2(1, 1), glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 			//layer.Add(fps);
@@ -112,8 +96,12 @@ int main()
 
 
 	//Label *fps = new Label(localeToUTF8("´ò±¬ºÌÃç¹·Í·£¡"), glm::vec2(-5, 0), glm::vec2(1, 1), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f));	
+	
+	FontManager::Add(new Font("Î¢ÈíÑÅºÚ", "Î¢ÈíÑÅºÚ.ttf", 32));
+	FontManager::Add(new Font("Arial", "Arial.ttf", 16));
+	
 	Group *group = new Group(glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)));
-	Label *fps = new Label("FPS: 0", glm::vec2(0, 0), glm::vec2(1, 1), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f));
+	Label *fps = new Label("FPS: 0", glm::vec2(0, 0), glm::vec2(1, 1), FontManager::GetFont("Î¢ÈíÑÅºÚ", 32), Color_FloatToInt(glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f)));
 
 	group->Add(fps);
 
@@ -153,26 +141,43 @@ int main()
 
 		}
 
+		const std::vector<Renderable2D*> &rs = layer.GetRenderables();
+		for (unsigned int i = 0; i < rs.size(); i++)
+		{
+			rs[i]->SetColor(Color_FloatToInt(glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f)));
+		}
+
 		layer.render();
 		//layer2.render();
+
+		//if (window.IsKeyTyped(GLFW_KEY_S))
+		//{
+		//	std::cout << "S";
+		//}
+
+		//if (window.IsMouseButtonClicked(GLFW_MOUSE_BUTTON_1))
+		//{
+		//	std::cout << "1";
+		//}
 
 		window.Update();
 		frames++;
 		if (time.Elapsed() - timer > 1.0f)
 		{
 			timer += 1.0f;
-			char str[10];
-			sprintf_s(str, "FPS: %d", frames);
 
+			char str[100];
+			sprintf_s(str, "FPS: %i Sprites: %i", frames, layer.GetLayerSize());
 			fps->m_Text = str;
-			printf("FPS: %i Sprites:\n", frames);
+
+			printf("FPS: %i Sprites: %i\n", frames, layer.GetLayerSize());
 			frames = 0;
 		}
 
 		group->m_transformationmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), time.Elapsed(), glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.5f, 0.0f));
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (unsigned int i = 0; i < 3; i++)
 	{
 		delete textures[i];
 	}
@@ -180,3 +185,5 @@ int main()
 
 	return 0;
 }
+
+#endif 

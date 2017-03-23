@@ -9,7 +9,7 @@ namespace Engine
 		{
 		private:
 		public:
-			Sprite(glm::vec2 pos, glm::vec2 size, const glm::vec4 color);
+			Sprite(glm::vec2 pos, glm::vec2 size, unsigned int color);
 			Sprite(glm::vec2 pos, glm::vec2 size, Texture *texture);
 		};
 	}

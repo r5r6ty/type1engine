@@ -60,6 +60,15 @@
     <ClCompile Include="System\Graphics\label.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="System\Utils\image_load.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Graphics\font.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Graphics\fontmanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System\Graphics\window.h">
@@ -117,6 +126,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="System\Graphics\label.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Graphics\font.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Graphics\fontmanager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

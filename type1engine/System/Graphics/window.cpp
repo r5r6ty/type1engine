@@ -15,7 +15,7 @@ namespace Engine
 		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
 			Window *win = (Window*)glfwGetWindowUserPointer(window);
-			if (action == GLFW_PRESS)
+			if (action != GLFW_RELEASE)
 			{
 				win->m_keys[key] = true;
 			}
@@ -28,7 +28,7 @@ namespace Engine
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		{
 			Window *win = (Window*)glfwGetWindowUserPointer(window);
-			if (action == GLFW_PRESS)
+			if (action != GLFW_RELEASE)
 			{
 				win->m_mouse[button] = true;
 			}
@@ -59,11 +59,15 @@ namespace Engine
 			for (unsigned int i = 0; i < KEY_MAX; i++)
 			{
 				m_keys[i] = false;
+				m_KeysState[i] = false;
+				m_KeysTyped[i] = false;
 			}
 
 			for (unsigned int i = 0; i < MOUSE_MAX; i++)
 			{
 				m_mouse[i] = false;
+				m_MouseState[i] = false;
+				m_MouseClicked[i] = false;
 			}
 
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -89,7 +93,7 @@ namespace Engine
 			}
 			glfwMakeContextCurrent(m_window);
 			glfwSetWindowUserPointer(m_window, this);
-			glfwSetWindowSizeCallback(m_window, window_size_callback);
+			glfwSetFramebufferSizeCallback(m_window, window_size_callback);
 			glfwSetMouseButtonCallback(m_window, mouse_button_callback);
 			glfwSetCursorPosCallback(m_window, cursor_position_callback);
 			glfwSwapInterval(0);
@@ -128,12 +132,26 @@ namespace Engine
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 
-		void Window::Update() const
+		void Window::Update()
 		{
+			for (unsigned int i = 0; i < KEY_MAX; i++)
+			{
+				m_KeysTyped[i] = m_keys[i] && !m_KeysState[i];
+			}
+
+			memcpy(m_KeysState, m_keys, KEY_MAX);
+
+			for (unsigned int i = 0; i < MOUSE_MAX; i++)
+			{
+				m_MouseClicked[i] = m_mouse[i] && !m_MouseState[i];
+			}
+
+			memcpy(m_MouseState, m_mouse, MOUSE_MAX);
+
 			GLenum error = glGetError();
 			if (error != GL_NO_ERROR)
 			{
-				printf("OpenGL Error: %i\n", error);
+				std::cout << "OpenGL Error: " << error << "->" <<gluErrorString(error) << std::endl;
 			}
 			glfwPollEvents();
 			glfwSwapBuffers(m_window);
@@ -154,9 +172,19 @@ namespace Engine
 			return m_keys[key];
 		}
 
+		bool Window::IsKeyTyped(unsigned int key) const
+		{
+			return m_KeysTyped[key];
+		}
+
 		bool Window::IsMouseButtonPressed(unsigned int button) const
 		{
 			return m_mouse[button];
+		}
+
+		bool Window::IsMouseButtonClicked(unsigned int button) const
+		{
+			return m_MouseClicked[button];
 		}
 
 		void Window::GetMousePosition(double *x, double *y) const

@@ -5,7 +5,7 @@ namespace Engine
 	namespace Graphics
 	{
 		StaticSprite::StaticSprite(glm::vec2 pos, glm::vec2 size, const glm::vec4 color, Shader *shader)
-			: Renderable2D(glm::vec3(pos, 0.0f), size, color), m_shader(shader)
+			: Renderable2D(glm::vec3(pos, 0.0f), size, 0xFFFFFFFF), m_shader(shader)
 		{
 			m_vertexarray = new VertexArray();
 

@@ -18,6 +18,9 @@ namespace Engine
 			virtual ~Layer();
 			virtual void Add(Renderable2D *renderable);
 			virtual void render();
+			inline const GLuint GetLayerSize() const { return m_renderables.size(); };
+
+			inline const std::vector<Renderable2D*> &GetRenderables() const { return m_renderables; }
 		};
 	}
 }

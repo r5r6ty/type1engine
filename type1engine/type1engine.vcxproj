@@ -71,16 +71,16 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\freetype-gl-master;$(SolutionDir)\..\freetype-2.7\include;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Ext\freetype-gl;$(ProjectDir)Ext\freetype;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\..\GorillaAudio-0.3.1-bin\include;$(SolutionDir)\..\freetype-gl-master;$(SolutionDir)\..\freetype-2.7\include;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\..\GorillaAudio-0.3.1-bin\bin\win32\Release;$(ProjectDir)Ext\freetype-gl;$(ProjectDir)Ext\freetype;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SolutionDir)\..\freetype-gl-master;$(SolutionDir)\..\freetype-2.7\include;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Ext\freetype-gl;$(ProjectDir)Ext\freetype;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionDir)\..\GorillaAudio-0.3.1-bin\include;$(SolutionDir)\..\freetype-gl-master;$(SolutionDir)\..\freetype-2.7\include;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\include;$(SolutionDir)\..\glew-2.0.0\include;$(SolutionDir)\..\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)\..\GorillaAudio-0.3.1-bin\bin\win32\Release;$(ProjectDir)Ext\freetype-gl;$(ProjectDir)Ext\freetype;$(SolutionDir)\..\FreeImage\Dist\x32;$(SolutionDir)\..\glfw-3.2.1.bin.WIN32\lib-vc2015;$(SolutionDir)\..\glew-2.0.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;freetype27MT.lib;freetype-gl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;freetype27MT.lib;freetype-gl.lib;Glu32.lib;gorilla.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -130,7 +130,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;freetype27MT.lib;freetype-gl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;FreeImage.lib;freetype27MT.lib;freetype-gl.lib;Glu32.lib;gorilla.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -157,6 +157,8 @@
     <ClCompile Include="System\Graphics\Buffers\buffer.cpp" />
     <ClCompile Include="System\Graphics\Buffers\indexbuffer.cpp" />
     <ClCompile Include="System\Graphics\Buffers\vertexarray.cpp" />
+    <ClCompile Include="System\Graphics\font.cpp" />
+    <ClCompile Include="System\Graphics\fontmanager.cpp" />
     <ClCompile Include="System\Graphics\label.cpp" />
     <ClCompile Include="System\Graphics\Layers\groups.cpp" />
     <ClCompile Include="System\Graphics\Layers\layer.cpp" />
@@ -167,12 +169,15 @@
     <ClCompile Include="System\Graphics\texture.cpp" />
     <ClCompile Include="System\Graphics\window.cpp" />
     <ClCompile Include="System\Graphics\shader.cpp" />
+    <ClCompile Include="System\Utils\image_load.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="System\Graphics\batchrenderer2D.h" />
     <ClInclude Include="System\Graphics\Buffers\buffer.h" />
     <ClInclude Include="System\Graphics\Buffers\indexbuffer.h" />
     <ClInclude Include="System\Graphics\Buffers\vertexarray.h" />
+    <ClInclude Include="System\Graphics\font.h" />
+    <ClInclude Include="System\Graphics\fontmanager.h" />
     <ClInclude Include="System\Graphics\label.h" />
     <ClInclude Include="System\Graphics\Layers\groups.h" />
     <ClInclude Include="System\Graphics\Layers\layer.h" />

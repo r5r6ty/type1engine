@@ -1,5 +1,4 @@
 #include "shader.h"
-#include "../Utils/fileutils.h"
 
 namespace Engine
 {
@@ -25,24 +24,25 @@ namespace Engine
 			AddShader(SP, vs.c_str(), GL_VERTEX_SHADER);
 			AddShader(SP, fs.c_str(), GL_FRAGMENT_SHADER);
 			glLinkProgram(SP);
-			//GLint success;
-			//glGetShaderiv(SP, GL_LINK_STATUS, &success);
-			//if (!success)
-			//{
-			//	GLchar ErrorLog[1024] = { 0 };
-			//	glGetShaderInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
-			//	fprintf(stderr, "Error linking shader type: %s\n", ErrorLog);
-			//	exit(1);
-			//}
+			GLint successlink;
+			glGetShaderiv(SP, GL_LINK_STATUS, &successlink);
+			if (!successlink)
+			{
+				GLchar ErrorLog[1024] = { 0 };
+				glGetShaderInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
+				fprintf(stderr, "Error linking shader type: %s\n", ErrorLog);
+				exit(1);
+			}
 			glValidateProgram(SP);
-			//glGetShaderiv(SP, GL_VALIDATE_STATUS, &success);
-			//if (!success)
-			//{
-			//	GLchar ErrorLog[1024] = { 0 };
-			//	glGetShaderInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
-			//	fprintf(stderr, "Error validating shader type: %s\n", ErrorLog);
-			//	exit(1);
-			//}
+			GLint successvalidate;
+			glGetShaderiv(SP, GL_VALIDATE_STATUS, &successvalidate);
+			if (!successvalidate)
+			{
+				GLchar ErrorLog[1024] = { 0 };
+				glGetShaderInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
+				fprintf(stderr, "Error validating shader type: %s\n", ErrorLog);
+				exit(1);
+			}
 			return SP;
 		}
 

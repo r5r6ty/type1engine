@@ -25,5 +25,5 @@ void main()
 		texColor = vec4(fs_in.color.rgb, 0.0f) + texture(textures[tid], fs_in.uv);
 	}
 
-	color = texColor;// * intensity;
+	color = texColor * intensity;
 }

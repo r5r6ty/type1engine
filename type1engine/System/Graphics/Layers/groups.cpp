@@ -9,6 +9,13 @@ namespace Engine
 		{
 
 		}
+		Group::~Group()
+		{
+			for (unsigned int i = 0; i < m_renderables.size(); i++)
+			{
+				delete m_renderables[i];
+			}
+		}
 
 		void Group::Add(Renderable2D *renderable)
 		{

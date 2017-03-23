@@ -26,6 +26,8 @@ namespace Engine
 			glVertexAttribPointer(index, buffer->GetComponentCount(), GL_FLOAT, GL_FALSE, 0, 0);
 			buffer->UnBind();
 			UnBind();
+
+			m_buffers.push_back(buffer);
 		}
 		void VertexArray::Bind() const
 		{

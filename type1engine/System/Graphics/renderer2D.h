@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <GL/glew.h>
+#include "font.h"
 
 namespace Engine
 {
@@ -44,8 +45,7 @@ namespace Engine
 
 			virtual void Begin() {}
 			virtual void Submit(const Renderable2D *renderable2D) = 0;
-			virtual void DrawString(const char *text, const glm::vec3 &position, const glm::vec4 &color) {}
-			virtual void ChangeText(const char *text) {}
+			virtual void DrawString(const char *text, const glm::vec3 &position, Font &font, unsigned int color) {}
 			virtual void End() {}
 			virtual void Flush() = 0;
 		};

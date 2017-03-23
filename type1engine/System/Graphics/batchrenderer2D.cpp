@@ -2,25 +2,6 @@
 
 namespace Engine
 {
-	char *localeToUTF8(char *src)
-	{
-		static char *buf = NULL;
-		if (buf)
-		{
-			free(buf);
-			buf = NULL;
-		}
-		wchar_t *unicode_buf;
-		int nRetLen = MultiByteToWideChar(CP_ACP, 0, src, -1, NULL, 0);
-		unicode_buf = (wchar_t*)malloc((nRetLen + 1) * sizeof(wchar_t));
-		MultiByteToWideChar(CP_ACP, 0, src, -1, unicode_buf, nRetLen);
-		nRetLen = WideCharToMultiByte(CP_UTF8, 0, unicode_buf, -1, NULL, 0, NULL, NULL);
-		buf = (char*)malloc(nRetLen + 1);
-		WideCharToMultiByte(CP_UTF8, 0, unicode_buf, -1, buf, nRetLen, NULL, NULL);
-		free(unicode_buf);
-		return buf;
-	}
-
 	namespace Graphics
 	{
 		BatchRenderer2D::BatchRenderer2D()
@@ -70,18 +51,6 @@ namespace Engine
 			delete indices;
 
 			glBindVertexArray(0);
-
-			m_FTAtlas = ftgl::texture_atlas_new(512, 512, 1);
-			m_FTFont = ftgl::texture_font_new_from_file(m_FTAtlas, 40, "Î¢ÈíÑÅºÚ.ttf");
-
-			ftgl::texture_font_load_glyph(m_FTFont, "");
-			glGenTextures(1, &m_FTAtlas->id);
-			glBindTexture(GL_TEXTURE_2D, m_FTAtlas->id);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, m_FTAtlas->width, m_FTAtlas->height,
-				0, GL_ALPHA, GL_UNSIGNED_BYTE, m_FTAtlas->data);
-			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
 		void BatchRenderer2D::Begin()
@@ -94,17 +63,15 @@ namespace Engine
 		{
 			const glm::vec3 &position = renderable->GetPosition();
 			const glm::vec2 &size = renderable->GetSize();
-			const glm::vec4 &color = renderable->GetColor();
+			const unsigned int &color = renderable->GetColor();
 			const std::vector<glm::vec2> &uv = renderable->GetUV();
 			const GLuint tid = renderable->GetTID();
-
-			unsigned int c = 0;
 
 			float ts = 0.0f;
 			if (tid > 0)
 			{
 				bool found = false;
-				for (int i = 0; i < m_TextureSlots.size(); i++)
+				for (unsigned int i = 0; i < m_TextureSlots.size(); i++)
 				{
 					if (m_TextureSlots[i] == tid)
 					{
@@ -127,67 +94,45 @@ namespace Engine
 			}
 			else
 			{
-				int r = int(color.x * 255.0f);
-				int g = int(color.y * 255.0f);
-				int b = int(color.z * 255.0f);
-				int a = int(color.w * 255.0f);
 
-				c = a << 24 | b << 16 | g << 8 | r;
 			}
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position, 1.0f);
 			m_buffer->uv = uv[0];
 			m_buffer->tid = ts;
-			m_buffer->color = c;
+			m_buffer->color = color;
 			m_buffer++;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position.x, position.y + size.y, position.z ,1.0f);
 			m_buffer->uv = uv[1];
 			m_buffer->tid = ts;
-			m_buffer->color = c;
+			m_buffer->color = color;
 			m_buffer++;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position.x + size.x, position.y + size.y, position.z, 1.0f);
 			m_buffer->uv = uv[2];
 			m_buffer->tid = ts;
-			m_buffer->color = c;
+			m_buffer->color = color;
 			m_buffer++;
 
 			m_buffer->vertex = *m_m_transformationback * glm::vec4(position.x + size.x, position.y, position.z, 1.0f);
 			m_buffer->uv = uv[3];
 			m_buffer->tid = ts;
-			m_buffer->color = c;
+			m_buffer->color = color;
 			m_buffer++;
 
 			m_indexcount += 6;
 		}
 
-		void BatchRenderer2D::ChangeText(const char *text)
-		{
-
-			ftgl::texture_font_load_glyph(m_FTFont, text);
-			glBindTexture(GL_TEXTURE_2D, m_FTAtlas->id);
-			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_FTAtlas->width, m_FTAtlas->height, GL_ALPHA, GL_UNSIGNED_BYTE, m_FTAtlas->data);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-		}
-
-		void BatchRenderer2D::DrawString(const char *text, const glm::vec3 &position, const glm::vec4 &color)
+		void BatchRenderer2D::DrawString(const char *text, const glm::vec3 &position, Font &font, unsigned int color)
 		{
 			using namespace ftgl;
 
-			int r = int(color.x * 255.0f);
-			int g = int(color.y * 255.0f);
-			int b = int(color.z * 255.0f);
-			int a = int(color.w * 255.0f);
-
-			unsigned int c = a << 24 | b << 16 | g << 8 | r;
-
 			float ts = 0.0f;
 			bool found = false;
-			for (int i = 0; i < m_TextureSlots.size(); i++)
+			for (unsigned int i = 0; i < m_TextureSlots.size(); i++)
 			{
-				if (m_TextureSlots[i] == m_FTAtlas->id)
+				if (m_TextureSlots[i] == font.GetAtlas()->id)
 				{
 					ts = (float)(i + 1);
 					found = true;
@@ -202,7 +147,7 @@ namespace Engine
 					Flush();
 					Begin();
 				}
-				m_TextureSlots.push_back(m_FTAtlas->id);
+				m_TextureSlots.push_back(font.GetAtlas()->id);
 				ts = (float)(m_TextureSlots.size());
 			}
 
@@ -210,10 +155,15 @@ namespace Engine
 			float scaleY = 540.0f / 18.0f;
 
 			float x = position.x;
+
+			glBindTexture(GL_TEXTURE_2D, font.GetAtlas()->id);
+			glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, font.GetAtlas()->width, font.GetAtlas()->height, GL_ALPHA, GL_UNSIGNED_BYTE, font.GetAtlas()->data);
+			glBindTexture(GL_TEXTURE_2D, 0);
 			
-			for (int i = 0; i < strlen(text); ++i)
+			ftgl::texture_font_t *ftfont = font.GetFont();
+			for (unsigned int i = 0; i < strlen(text); ++i)
 			{
-				texture_glyph_t *glyph = texture_font_get_glyph(m_FTFont, text + i);
+				texture_glyph_t *glyph = texture_font_get_glyph(ftfont, text + i);
 				if (glyph != NULL)
 				{
 					float kerning = 0.0f;
@@ -236,25 +186,25 @@ namespace Engine
 					m_buffer->vertex = *m_m_transformationback * glm::vec4(x0, y0, 0.0f ,1.0f);
 					m_buffer->uv = glm::vec2(u0, v0);
 					m_buffer->tid = ts;
-					m_buffer->color = c;
+					m_buffer->color = color;
 					m_buffer++;
 
 					m_buffer->vertex = *m_m_transformationback * glm::vec4(x0, y1, 0.0f, 1.0f);
 					m_buffer->uv = glm::vec2(u0, v1);
 					m_buffer->tid = ts;
-					m_buffer->color = c;
+					m_buffer->color = color;
 					m_buffer++;
 
 					m_buffer->vertex = *m_m_transformationback * glm::vec4(x1, y1, 0.0f, 1.0f);
 					m_buffer->uv = glm::vec2(u1, v1);
 					m_buffer->tid = ts;
-					m_buffer->color = c;
+					m_buffer->color = color;
 					m_buffer++;
 
 					m_buffer->vertex = *m_m_transformationback * glm::vec4(x1, y0, 0.0f, 1.0f);
 					m_buffer->uv = glm::vec2(u1, v0);
 					m_buffer->tid = ts;
-					m_buffer->color = c;
+					m_buffer->color = color;
 					m_buffer++;
 
 					m_indexcount += 6;
@@ -276,7 +226,7 @@ namespace Engine
 
 		void BatchRenderer2D::Flush()
 		{
-			for (int i = 0; i < m_TextureSlots.size(); i++)
+			for (unsigned int i = 0; i < m_TextureSlots.size(); i++)
 			{
 				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, m_TextureSlots[i]);

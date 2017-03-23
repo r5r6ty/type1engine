@@ -18,17 +18,23 @@ namespace Engine
 			unsigned int m_width,m_height;
 			GLFWwindow *m_window;
 			bool m_keys[KEY_MAX];
+			bool m_KeysState[KEY_MAX];
+			bool m_KeysTyped[KEY_MAX];
 			bool m_mouse[MOUSE_MAX];
+			bool m_MouseState[MOUSE_MAX];
+			bool m_MouseClicked[MOUSE_MAX];
 			double m_mouseposX, m_mouseposY;
 		public:
 			Window(const char *t, unsigned int w, unsigned int h);
 			~Window();
 			void Clear() const;
-			void Update() const;
+			void Update();
 			int IsClosed() const;
 			void Close() const;
 			bool IsKeyPressed(unsigned int key) const;
+			bool IsKeyTyped(unsigned int key) const;
 			bool IsMouseButtonPressed(unsigned int button) const;
+			bool IsMouseButtonClicked(unsigned int button) const;
 			void GetMousePosition(double *x, double *y) const;
 			inline unsigned int GetWindowWidth() const { return m_width; };
 			inline unsigned int GetWindowHeight() const { return m_height; };

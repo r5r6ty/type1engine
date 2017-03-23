@@ -1,8 +1,6 @@
 #pragma once
 #include <cstddef>
 #include "renderable2D.h"
-#define NOT_USING_FT_GL_NAMESPACE
-#include <freetype-gl.h>
 
 namespace Engine
 {
@@ -26,15 +24,13 @@ namespace Engine
 			IndexBuffer *m_IBO;
 			GLsizei m_indexcount;
 			std::vector<GLuint> m_TextureSlots;
-			ftgl::texture_atlas_t *m_FTAtlas;
-			ftgl::texture_font_t *m_FTFont;
+
 		public:
 			BatchRenderer2D();
 			~BatchRenderer2D();
 			void Begin() override;
 			void Submit(const Renderable2D *renderable2D) override;
-			void DrawString(const char *text, const glm::vec3 &position, const glm::vec4 &color) override;
-			void ChangeText(const char *text) override;
+			void DrawString(const char *text, const glm::vec3 &position, Font &font, unsigned int color) override;
 			void End() override;
 			void Flush() override;
 		private:

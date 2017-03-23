@@ -13,6 +13,7 @@ namespace Engine
 			glm::mat4 m_transformationmatrix;
 		public:
 			Group(const glm::mat4 &transform);
+			~Group();
 			void Add(Renderable2D *renderable);
 			void Submit(Renderer2D *renderer) const override;
 		};

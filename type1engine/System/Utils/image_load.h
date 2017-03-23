@@ -1,32 +1,35 @@
 #pragma once
+#include <iostream>
 #include <FreeImage.h>
 
 namespace Engine
 {
-	static BYTE *LoadImage(const char *path, GLsizei *width, GLsizei *hegith)
+	namespace Image
 	{
-		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-		FIBITMAP *dib(0);
-		fif = FreeImage_GetFileType(path, 0);
-		if (fif == FIF_UNKNOWN)
+		class ImageSrc
 		{
-			fif = FreeImage_GetFIFFromFilename(path);
-		}
-		if (fif == FIF_UNKNOWN)
-		{
-			return nullptr;
-		}
-		if (FreeImage_FIFSupportsReading(fif))
-		{
-			dib = FreeImage_Load(fif, path);
-		}
-		if (!dib)
-		{
-			return nullptr;
-		}
-		BYTE *result = FreeImage_GetBits(dib);
-		*width = FreeImage_GetWidth(dib);
-		*hegith = FreeImage_GetHeight(dib);
-		return result;
+		private:
+			const char *m_path;
+			unsigned int m_width, m_height;
+			unsigned int m_bits;
+			FIBITMAP  *m_dib;
+			BYTE *m_pixels;
+		public:
+			ImageSrc(const char *p) : m_path(p)
+			{
+				m_pixels = Init(m_path);
+			}
+			~ImageSrc()
+			{
+				FreeImage_Unload(m_dib);
+			}
+
+			const unsigned int &GetWidth() const { return m_width; };
+			const unsigned int &GetHeight() const { return m_height; };
+			BYTE *GetPixels() const { return m_pixels; };
+			const unsigned int &GetBits() const { return m_bits; };
+
+			BYTE *Init(const char *path);
+		};
 	}
 }
