@@ -3,6 +3,7 @@
 
 To compile this code you need the following libraries.Put them with type1engine folder together.
  
+* GorillaAudio-0.3.1-bin 
 * freetype-gl-master
 * freetype-2.7
 * FreeImage
