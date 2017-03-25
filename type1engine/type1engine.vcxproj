@@ -153,12 +153,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="System\Audios\sound.cpp" />
+    <ClCompile Include="System\Audios\soundmanager.cpp" />
     <ClCompile Include="System\Graphics\batchrenderer2D.cpp" />
     <ClCompile Include="System\Graphics\Buffers\buffer.cpp" />
     <ClCompile Include="System\Graphics\Buffers\indexbuffer.cpp" />
     <ClCompile Include="System\Graphics\Buffers\vertexarray.cpp" />
-    <ClCompile Include="System\Graphics\font.cpp" />
-    <ClCompile Include="System\Graphics\fontmanager.cpp" />
+    <ClCompile Include="System\Fonts\font.cpp" />
+    <ClCompile Include="System\Fonts\fontmanager.cpp" />
     <ClCompile Include="System\Graphics\label.cpp" />
     <ClCompile Include="System\Graphics\Layers\groups.cpp" />
     <ClCompile Include="System\Graphics\Layers\layer.cpp" />
@@ -172,12 +174,14 @@
     <ClCompile Include="System\Utils\image_load.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="System\Audios\sound.h" />
+    <ClInclude Include="System\Audios\soundmanager.h" />
     <ClInclude Include="System\Graphics\batchrenderer2D.h" />
     <ClInclude Include="System\Graphics\Buffers\buffer.h" />
     <ClInclude Include="System\Graphics\Buffers\indexbuffer.h" />
     <ClInclude Include="System\Graphics\Buffers\vertexarray.h" />
-    <ClInclude Include="System\Graphics\font.h" />
-    <ClInclude Include="System\Graphics\fontmanager.h" />
+    <ClInclude Include="System\Fonts\font.h" />
+    <ClInclude Include="System\Fonts\fontmanager.h" />
     <ClInclude Include="System\Graphics\label.h" />
     <ClInclude Include="System\Graphics\Layers\groups.h" />
     <ClInclude Include="System\Graphics\Layers\layer.h" />
@@ -190,14 +194,17 @@
     <ClInclude Include="System\Graphics\texture.h" />
     <ClInclude Include="System\Graphics\window.h" />
     <ClInclude Include="System\Graphics\shader.h" />
+    <ClInclude Include="type1engine.h" />
     <ClInclude Include="System\Utils\fileutils.h" />
     <ClInclude Include="System\Utils\image_load.h" />
     <ClInclude Include="System\Utils\timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Free-Converter.com-bgm.maoudamashii_8bit10-43682615.ogg" />
     <None Include="FreeImage.dll" />
     <None Include="System\Shaders\shader.frag" />
     <None Include="System\Shaders\shader.vert" />
+    <None Include="测试.ogg" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="001.png" />
@@ -209,6 +216,9 @@
   <ItemGroup>
     <Font Include="Arial.ttf" />
     <Font Include="微软雅黑.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="explosion1.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

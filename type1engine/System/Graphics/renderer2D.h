@@ -1,13 +1,15 @@
 #pragma once
 #include <vector>
 #include <GL/glew.h>
-#include "font.h"
+#include "../Fonts/font.h"
 
 namespace Engine
 {
 	namespace Graphics
 	{
 		class Renderable2D;
+
+		using namespace Fonts;
 
 		class Renderer2D
 		{

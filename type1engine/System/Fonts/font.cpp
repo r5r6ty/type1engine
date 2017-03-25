@@ -2,7 +2,7 @@
 
 namespace Engine
 {
-	namespace Graphics
+	namespace Fonts
 	{
 		Font::Font(const char *name, const char *file, unsigned int size)
 			: m_Name(name), m_FilePath(file), m_Size(size)
@@ -25,6 +25,14 @@ namespace Engine
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_ALPHA, m_FTAtlas->width, m_FTAtlas->height,
 				0, GL_ALPHA, GL_UNSIGNED_BYTE, m_FTAtlas->data);
 			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		Font::~Font()
+		{
+			glDeleteTextures(1, &m_FTAtlas->id);
+			m_FTAtlas->id = 0;
+			ftgl::texture_atlas_delete(m_FTAtlas);
+			ftgl::texture_font_delete(m_FTFont);
 		}
 	}
 }

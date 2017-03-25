@@ -13,8 +13,11 @@ namespace Engine
 #define SHADER_UV_INDEX			1
 #define SHADER_TID_INDEX		2
 #define SHADER_COLOR_INDEX		3
+
 	namespace Graphics
 	{
+		using namespace Fonts;
+
 		class BatchRenderer2D : public Renderer2D
 		{
 		private:

@@ -8,7 +8,6 @@
 
 namespace Engine
 {
-
 	struct VertexData
 	{
 		glm::vec3 vertex;

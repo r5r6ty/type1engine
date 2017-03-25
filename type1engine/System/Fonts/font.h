@@ -1,11 +1,11 @@
 #pragma once
+#include <iostream>
 #define NOT_USING_FT_GL_NAMESPACE
 #include <freetype-gl.h>
-#include <iostream>
 
 namespace Engine
 {
-	namespace Graphics
+	namespace Fonts
 	{
 		class Font
 		{

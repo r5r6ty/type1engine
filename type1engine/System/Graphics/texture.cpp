@@ -13,6 +13,8 @@ namespace Engine
 
 		Texture::~Texture()
 		{
+			glDeleteTextures(1, &m_TID);
+			m_TID = 0;
 		}
 
 		void Texture::Bind() const

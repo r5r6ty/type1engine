@@ -70,12 +70,16 @@ namespace Engine
 				m_MouseClicked[i] = false;
 			}
 
+			SoundManager::init();
+
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		}
 
 		Window::~Window()
 		{
 			glfwTerminate();
+			FontManager::Clean();
+			SoundManager::Clean();
 		}
 
 		bool Window::Init()

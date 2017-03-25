@@ -63,10 +63,16 @@
     <ClCompile Include="System\Utils\image_load.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="System\Graphics\font.cpp">
+    <ClCompile Include="System\Audios\sound.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="System\Graphics\fontmanager.cpp">
+    <ClCompile Include="System\Audios\soundmanager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Fonts\font.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Fonts\fontmanager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,10 +134,19 @@
     <ClInclude Include="System\Graphics\label.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="System\Graphics\font.h">
+    <ClInclude Include="type1engine.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="System\Graphics\fontmanager.h">
+    <ClInclude Include="System\Audios\sound.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Audios\soundmanager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Fonts\font.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Fonts\fontmanager.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -139,6 +154,8 @@
     <None Include="System\Shaders\shader.vert" />
     <None Include="System\Shaders\shader.frag" />
     <None Include="FreeImage.dll" />
+    <None Include="Free-Converter.com-bgm.maoudamashii_8bit10-43682615.ogg" />
+    <None Include="测试.ogg" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="111.bmp">
@@ -160,5 +177,10 @@
   <ItemGroup>
     <Font Include="微软雅黑.ttf" />
     <Font Include="Arial.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="explosion1.wav">
+      <Filter>资源文件</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-	namespace Graphics
+	namespace Fonts
 	{
 		class FontManager
 		{

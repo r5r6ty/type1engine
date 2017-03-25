@@ -9,7 +9,7 @@ namespace Engine
 		{
 		public:
 			const char *m_Text;
-			Font *m_font;
+			Fonts::Font *m_font;
 		public:
 			Label(const char *text, glm::vec2 position, glm::vec2 size, Font *font, unsigned int color);
 			void Submit(Renderer2D *renderer) const override;

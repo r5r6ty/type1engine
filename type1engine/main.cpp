@@ -1,17 +1,4 @@
-#include "System/Graphics/window.h"
-#include "System/Graphics/shader.h"
-#include "System/Utils/timer.h"
-#include "System/Graphics/Buffers/vertexarray.h"
-#include "System/Graphics/Buffers/indexbuffer.h"
-#include "System/Graphics/simple2Drenderer.h"
-#include "System/Graphics/batchrenderer2D.h"
-#include "System/Graphics/static_sprite.h"
-#include "System/Graphics/sprite.h"
-#include "System/Graphics/Layers/tilelayer.h"
-#include "System/Graphics/Layers/groups.h"
-#include "System/Graphics/texture.h"
-#include "System/Graphics/label.h"
-#include "System/Graphics/fontmanager.h"
+#include "type1engine.h"
 
 #include <time.h>
 
@@ -28,7 +15,9 @@ int main()
 	srand((unsigned int)time(NULL));
 
 	using namespace Engine;
-	using namespace Graphics;	
+	using namespace Graphics;
+	using namespace Fonts;
+	using namespace Audios;
 
 	Window window("Type 1 Engine", 960, 540);
 
@@ -58,6 +47,10 @@ int main()
 	new Texture("001.png"),
 	new Texture("large.bmp")
 	};
+
+	FontManager::Add(new Font("Î¢ÈíÑÅºÚ", "Î¢ÈíÑÅºÚ.ttf", 32));
+	FontManager::Add(new Font("Î¢ÈíÑÅºÚ", "Î¢ÈíÑÅºÚ.ttf", 16));
+	FontManager::Add(new Font("Arial", "Arial.ttf", 16));
 
 #if TEST_50K_SPRITES
 	for (float y = -9.0f; y < 9.0f; y += 1.0f)
@@ -97,10 +90,15 @@ int main()
 
 
 	//Label *fps = new Label(localeToUTF8("´ò±¬ºÌÃç¹·Í·£¡"), glm::vec2(-5, 0), glm::vec2(1, 1), glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f));	
+
+	SoundManager::Add(new Sound("bgm", "Free-Converter.com-bgm.maoudamashii_8bit10-43682615.ogg"));
+	SoundManager::Add(new Sound("exp", "explosion1.wav"));
+	SoundManager::Add(new Sound("test", "²âÊÔ.ogg"));//¥Æ¥¹¥È.²âÊÔ.test_@^&
+
+	//SoundManager::GetSound("bgm", "ogg")->Play();
 	
-	FontManager::Add(new Font("Î¢ÈíÑÅºÚ", "Î¢ÈíÑÅºÚ.ttf", 32));
-	FontManager::Add(new Font("Arial", "Arial.ttf", 16));
-	
+
+
 	Group *group = new Group(glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)));
 	Label *fps = new Label("FPS: 0", glm::vec2(0, 0), glm::vec2(1, 1), FontManager::GetFont("Î¢ÈíÑÅºÚ", 32), Color_FloatToInt(glm::vec4(rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f, rand() % 1000 / 1000.0f)));
 
@@ -108,6 +106,13 @@ int main()
 
 	layer.Add(group);
 
+	std::vector<Label*> soundsstate;
+	for (unsigned int i = 0; i < SoundManager::GetSoundManagerSounds().size(); i++)
+	{
+		Label *soundsss = new Label("", glm::vec2(-16, 7 - i), glm::vec2(1, 1), FontManager::GetFont("Î¢ÈíÑÅºÚ", 16), 0xFFFFFFFF);
+		layer.Add(soundsss);
+		soundsstate.push_back(soundsss);
+	}
 
 	GLint texIDs[] =
 	{
@@ -117,7 +122,7 @@ int main()
 	shader1->Enable();
 	shader1->SetUniform1iv("textures", texIDs, 32);
 
-	
+	bool loop = false;
 	Timer time;
 	float timer = 0;
 	unsigned int frames = 0;
@@ -151,16 +156,67 @@ int main()
 		layer.render();
 		//layer2.render();
 
-		//if (window.IsKeyTyped(GLFW_KEY_S))
-		//{
-		//	std::cout << "S";
-		//}
+		if (window.IsKeyTyped(GLFW_KEY_N))
+		{
+			SoundManager::GetSound("test", "ogg")->Inst();
+		}
 
-		//if (window.IsMouseButtonClicked(GLFW_MOUSE_BUTTON_1))
-		//{
-		//	std::cout << "1";
-		//}
+		if (window.IsKeyTyped(GLFW_KEY_M))
+		{
+			SoundManager::GetSound("test", "ogg")->Stop();
+		}
 
+		if (window.IsKeyTyped(GLFW_KEY_B))
+		{
+			SoundManager::GetSound("bgm", "ogg")->Inst();
+		}
+
+		if (window.IsKeyTyped(GLFW_KEY_SPACE))
+		{
+			SoundManager::GetSound("bgm", "ogg")->Play();
+		}
+
+		if (window.IsKeyTyped(GLFW_KEY_P))
+		{
+			SoundManager::GetSound("bgm", "ogg")->Pause();
+		}
+
+		if (window.IsKeyTyped(GLFW_KEY_S))
+		{
+			SoundManager::GetSound("bgm", "ogg")->Stop();
+		}
+
+		if (window.IsMouseButtonClicked(GLFW_MOUSE_BUTTON_1))
+		{
+			SoundManager::GetSound("exp", "wav")->Play();
+		}
+
+		if (window.IsMouseButtonClicked(GLFW_MOUSE_BUTTON_2))
+		{
+			//for (unsigned int i = 0; i < 1000; i++)
+			//{
+				SoundManager::GetSound("exp", "wav")->Inst();
+			//}
+		}
+
+		
+		if (window.IsMouseButtonClicked(GLFW_MOUSE_BUTTON_3))
+		{
+			SoundManager::GetSound("exp", "wav")->SetLoop(loop);
+
+			if (loop == true)
+			{
+				loop = false;
+			}
+			else
+			{
+				loop = true;
+			}
+		}
+
+		//SoundManager::GetSound("exp", "wav")->Delete();
+
+		SoundManager::Update();
 		window.Update();
 		frames++;
 		if (time.Elapsed() - timer > 1.0f)
@@ -171,6 +227,22 @@ int main()
 			sprintf_s(str, "FPS: %i Sprites: %i", frames, layer.GetLayerSize());
 			fps->m_Text = str;
 
+			
+			for (unsigned int i = 0; i < SoundManager::GetSoundManagerSounds().size(); i++)
+			{
+				Sound* s = SoundManager::GetSoundManagerSounds()[i];
+
+				char str2[256];
+				
+				sprintf_s(str2, "SMs: %i   Count: %i   Name: %s   Type: %s   FilePath: %s   Loop: %s", i, s->GetHandles().size(), s->GetName(), s->GetType().c_str(), localeToUTF8(s->GetFilePath()), s->GetLoopSet() ? "On" : "OFF");
+
+				char *p = new char[strlen(str2) + 1];
+				memcpy(p, str2, strlen(str2) + 1);
+
+				soundsstate[i]->m_Text = p;
+			}
+
+
 			printf("FPS: %i Sprites: %i\n", frames, layer.GetLayerSize());
 			frames = 0;
 		}
@@ -178,11 +250,10 @@ int main()
 		group->m_transformationmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), time.Elapsed(), glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.5f, 0.0f));
 	}
 
-	for (unsigned int i = 0; i < 3; i++)
+	for (unsigned int i = 0; i < 4; i++)
 	{
 		delete textures[i];
 	}
-	
 
 	return 0;
 }

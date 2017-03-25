@@ -2,6 +2,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "../Fonts/fontmanager.h"
+#include "../Audios/soundmanager.h"
 
 
 namespace Engine
@@ -10,6 +12,9 @@ namespace Engine
 	{
 #define KEY_MAX 1024
 #define MOUSE_MAX 32
+
+		using namespace Fonts;
+		using namespace Audios;
 
 		class Window
 		{
