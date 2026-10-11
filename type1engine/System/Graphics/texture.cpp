@@ -1,4 +1,4 @@
-#include "texture.h""
+#include "texture.h"
 #include <iostream>
 
 namespace Engine
@@ -36,7 +36,7 @@ namespace Engine
 
 			GLuint result;
 
-			glGenBuffers(1, &result);
+			glGenTextures(1, &result);
 			glBindTexture(GL_TEXTURE_2D, result);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -50,6 +50,11 @@ namespace Engine
 				case 32:
 				{
 					glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, pixels);
+					break;
+				}
+				default:
+				{
+					printf("Unsupported bit depth: %u (%s)\n", m_bits, m_path);
 					break;
 				}
 			}

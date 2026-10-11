@@ -13,6 +13,7 @@ namespace Engine
 		{
 			delete m_IBO;
 			glDeleteBuffers(1, &m_VBO);
+			glDeleteVertexArrays(1, &m_VAO);
 		}
 
 		void BatchRenderer2D::init()
@@ -48,7 +49,7 @@ namespace Engine
 				offset += 4;
 			}
 			m_IBO = new IndexBuffer(indices, RENDERER_INDICES_SIZE);
-			delete indices;
+			delete[] indices;
 
 			glBindVertexArray(0);
 		}
@@ -213,7 +214,8 @@ namespace Engine
 				}
 				else
 				{
-					exit(1);
+					// 图集里没有这个字形（如中文字符配了 Arial）：跳过即可，不该整个退出
+					continue;
 				}
 			}
 		}

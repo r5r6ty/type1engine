@@ -12,7 +12,7 @@ namespace Engine
 		}
 		Shader::~Shader()
 		{
-			glDeleteShader(m_shaderID);
+			glDeleteProgram(m_shaderID);
 		}
 
 		GLuint Shader::SetShader()
@@ -25,21 +25,21 @@ namespace Engine
 			AddShader(SP, fs.c_str(), GL_FRAGMENT_SHADER);
 			glLinkProgram(SP);
 			GLint successlink;
-			glGetShaderiv(SP, GL_LINK_STATUS, &successlink);
+			glGetProgramiv(SP, GL_LINK_STATUS, &successlink);
 			if (!successlink)
 			{
 				GLchar ErrorLog[1024] = { 0 };
-				glGetShaderInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
+				glGetProgramInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
 				fprintf(stderr, "Error linking shader type: %s\n", ErrorLog);
 				exit(1);
 			}
 			glValidateProgram(SP);
 			GLint successvalidate;
-			glGetShaderiv(SP, GL_VALIDATE_STATUS, &successvalidate);
+			glGetProgramiv(SP, GL_VALIDATE_STATUS, &successvalidate);
 			if (!successvalidate)
 			{
 				GLchar ErrorLog[1024] = { 0 };
-				glGetShaderInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
+				glGetProgramInfoLog(SP, sizeof(ErrorLog), NULL, ErrorLog);
 				fprintf(stderr, "Error validating shader type: %s\n", ErrorLog);
 				exit(1);
 			}

@@ -41,12 +41,9 @@ namespace Engine
 			inline const char *GetName() const { return m_Name; }
 			inline const char *GetFilePath() const { return m_FilePath; }
 			inline const std::string &GetType() const { return m_Type; }
-;
 			inline const std::vector<SoundObject> &GetHandles() const { return m_Handles; }
 
 			inline const bool &GetLoopSet() const { return m_Loop; }
-
-			friend void setFlagAndLoopOnFinish(ga_Handle *in_handle, void *in_context);
 		};
 	}
 }

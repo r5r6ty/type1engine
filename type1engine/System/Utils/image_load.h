@@ -12,7 +12,7 @@ namespace Engine
 			const char *m_path;
 			unsigned int m_width, m_height;
 			unsigned int m_bits;
-			FIBITMAP  *m_dib;
+			FIBITMAP  *m_dib = nullptr;
 			BYTE *m_pixels;
 		public:
 			ImageSrc(const char *p) : m_path(p)

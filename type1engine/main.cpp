@@ -234,12 +234,9 @@ int main()
 
 				char str2[256];
 				
-				sprintf_s(str2, "SMs: %i   Count: %i   Name: %s   Type: %s   FilePath: %s   Loop: %s", i, s->GetHandles().size(), s->GetName(), s->GetType().c_str(), localeToUTF8(s->GetFilePath()), s->GetLoopSet() ? "On" : "OFF");
+				sprintf_s(str2, "SMs: %i   Count: %i   Name: %s   Type: %s   FilePath: %s   Loop: %s", i, s->GetHandles().size(), s->GetName(), s->GetType().c_str(), localeToUTF8(s->GetFilePath()).c_str(), s->GetLoopSet() ? "On" : "OFF");
 
-				char *p = new char[strlen(str2) + 1];
-				memcpy(p, str2, strlen(str2) + 1);
-
-				soundsstate[i]->m_Text = p;
+				soundsstate[i]->m_Text = str2;
 			}
 
 
@@ -250,7 +247,7 @@ int main()
 		group->m_transformationmatrix = glm::translate(glm::mat4(1.0f), glm::vec3(-16.0f, 8.0f, 0.0f)) * glm::rotate(glm::mat4(1.0f), time.Elapsed(), glm::vec3(1.0f, 0.0f, 0.0f)) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -0.5f, 0.0f));
 	}
 
-	for (unsigned int i = 0; i < 4; i++)
+	for (unsigned int i = 0; i < 5; i++)
 	{
 		delete textures[i];
 	}

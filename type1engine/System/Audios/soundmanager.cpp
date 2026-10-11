@@ -1,4 +1,5 @@
 #include "soundmanager.h"
+#include <string.h>
 
 namespace Engine
 {
@@ -22,11 +23,12 @@ namespace Engine
 
 		Sound *SoundManager::GetSound(const char *name, const char *type)
 		{
-			for (unsigned int i = 0; i < m_Sounds.size(); i++)
+			// name 是 const char*，必须按内容比较（== 比的是指针）
+			for (std::map<unsigned int, Sound*>::iterator iter = m_Sounds.begin(); iter != m_Sounds.end(); ++iter)
 			{
-				if (name == m_Sounds[i]->GetName() && type == m_Sounds[i]->GetType())
+				if (strcmp(name, iter->second->GetName()) == 0 && type == iter->second->GetType())
 				{
-					return m_Sounds[i];
+					return iter->second;
 				}
 			}
 			std::cout << "Cannot find sound -> Name: " << name << " Type: " << type << std::endl;
@@ -36,21 +38,26 @@ namespace Engine
 
 		void SoundManager::DeleteSound(const char * name, const char * type)
 		{
-			for (unsigned int i = 0; i < m_Sounds.size(); i++)
+			for (std::map<unsigned int, Sound*>::iterator iter = m_Sounds.begin(); iter != m_Sounds.end();)
 			{
-				if (name == m_Sounds[i]->GetName() && type == m_Sounds[i]->GetType())
+				if (strcmp(name, iter->second->GetName()) == 0 && type == iter->second->GetType())
 				{
-					delete m_Sounds[i];
-					m_Sounds.erase(i);
+					delete iter->second;
+					m_Sounds.erase(iter++);
+				}
+				else
+				{
+					++iter;
 				}
 			}
 		}
 
 		void SoundManager::Update()
 		{
-			for (unsigned int i = 0; i < m_Sounds.size(); i++)
+			// 删除后键会有空洞，不能用 m_Sounds[i] 取（operator[] 会插 nullptr）
+			for (std::map<unsigned int, Sound*>::iterator iter = m_Sounds.begin(); iter != m_Sounds.end(); ++iter)
 			{
-				m_Sounds[i]->DeleteFinishedHandle();
+				iter->second->DeleteFinishedHandle();
 			}
 
 			gau_manager_update(m_Manager);
@@ -60,19 +67,19 @@ namespace Engine
 		void SoundManager::ListSounds()
 		{
 			std::cout << "List sounds(" << m_Sounds.size() << "):" << std::endl;
-			for (unsigned int i = 0; i < m_Sounds.size(); i++)
+			for (std::map<unsigned int, Sound*>::iterator iter = m_Sounds.begin(); iter != m_Sounds.end(); ++iter)
 			{
-				std::cout << "No." << i << " Name: " << m_Sounds[i]->GetName() << " Type: " << m_Sounds[i]->GetType() << " FilePath: " << m_Sounds[i]->GetFilePath() << std::endl;
+				std::cout << "No." << iter->first << " Name: " << iter->second->GetName() << " Type: " << iter->second->GetType() << " FilePath: " << iter->second->GetFilePath() << std::endl;
 			}
 		}
 
 		void SoundManager::Clean()
 		{
-			for (unsigned int i = 0; i < m_Sounds.size(); i++)//delete object
+			for (std::map<unsigned int, Sound*>::iterator iter = m_Sounds.begin(); iter != m_Sounds.end(); ++iter)
 			{
-				delete m_Sounds[i];
-				m_Sounds.erase(i);
+				delete iter->second;
 			}
+			m_Sounds.clear();
 
 			gau_manager_destroy(m_Manager);
 			gc_shutdown();

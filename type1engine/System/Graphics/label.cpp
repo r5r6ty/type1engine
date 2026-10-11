@@ -11,7 +11,7 @@ namespace Engine
 
 		void Label::Submit(Renderer2D *renderer) const
 		{
-			renderer->DrawString(m_Text, m_postition, *m_font, m_color);
+			renderer->DrawString(m_Text.c_str(), m_postition, *m_font, m_color);
 		}
 	}
 }

@@ -4,17 +4,11 @@ namespace Engine
 {
 	namespace Audios
 	{
-		void setFlagAndDestroyOnFinish(ga_Handle *in_handle, void *in_context)
+		// 播完由音频库回调：只置 DESTROYED 状态，内存随后在 gau_manager_update 的 dispatch 里释放。
+		// 不能在这里碰 m_Handles（vector 只归主线程），也别往调用方的栈上写东西。
+		void destroyOnFinish(ga_Handle *in_handle, void *in_context)
 		{
-			gc_int32 *flag = (gc_int32*)(in_context);
-			*flag = 1;
-			ga_handle_destroy(in_handle);
-		}
-
-		void setFlagAndLoopOnFinish(ga_Handle *in_handle, void *in_context)
-		{
-			gc_int32 *flag = (gc_int32*)(in_context);
-			*flag = 1;
+			(void)in_context;
 			ga_handle_destroy(in_handle);
 		}
 
@@ -36,27 +30,23 @@ namespace Engine
 
 		Sound::~Sound()
 		{
-			std::vector<SoundObject>::iterator iter = m_Handles.begin();
-			for (; iter != m_Handles.end();)
+			for (unsigned int i = 0; i < m_Handles.size(); i++)
 			{
-				if (iter->s_handle != NULL)
+				if (m_Handles[i].s_handle != NULL)
 				{
-					ga_handle_destroy(iter->s_handle);
+					ga_handle_destroy(m_Handles[i].s_handle);
 				}
-				iter = m_Handles.erase(iter);
 			}
-			std::vector <SoundObject>().swap(m_Handles);
+			m_Handles.clear();
 
 			ga_sound_release(m_Sound);
 		}
 
 		void Sound::Inst()
 		{
-			gc_int32 quit = 0;
 			SoundObject sdob;
 			sdob.loopSrc = 0;
-			//gau_SampleSourceLoop** p = &sdob.loopSrc;
-			sdob.s_handle = gau_create_handle_sound(SoundManager::m_Mixer, m_Sound, &setFlagAndDestroyOnFinish, &quit, &sdob.loopSrc);
+			sdob.s_handle = gau_create_handle_sound(SoundManager::m_Mixer, m_Sound, &destroyOnFinish, NULL, &sdob.loopSrc);
 			sdob.s_Position = 0;
 			m_Handles.push_back(sdob);
 
@@ -68,7 +58,7 @@ namespace Engine
 		{
 			for (unsigned int i = 0; i < m_Handles.size(); i++)
 			{
-				if (m_Handles[i].s_handle->state != 2)
+				if (m_Handles[i].s_handle->state != 2) // GA_HANDLE_STATE_PLAYING
 				{
 					ga_handle_play(m_Handles[i].s_handle);
 					ga_handle_seek(m_Handles[i].s_handle, m_Handles[i].s_Position);
@@ -97,26 +87,26 @@ namespace Engine
 			}
 		}
 
+		// ga_handle_destroy 只是标记 DESTROYED，内存要等 dispatch 线程 ACK 后才释放；
+		// 但 Play()/DeleteFinishedHandle 之后还会解引用句柄，所以这里必须把条目一并清掉。
 		void Sound::Stop()
 		{
 			for (unsigned int i = 0; i < m_Handles.size(); i++)
 			{
 				ga_handle_destroy(m_Handles[i].s_handle);
-				m_Handles[i].s_Position = 0;
 			}
+			m_Handles.clear();
 		}
 
 		void Sound::DeleteFinishedHandle()
 		{
+			// 句柄状态到 FINISHED/DESTROYED 后，释放由 gau_manager_update 的 dispatch 兜底，这里只移除条目。
 			std::vector<SoundObject>::iterator iter = m_Handles.begin();
 			for (; iter != m_Handles.end();)
 			{
-				if (iter->s_handle->finished != 0 || iter->s_handle->state == 4 || iter->s_handle->state == 5)
+				if (iter->s_handle == NULL || iter->s_handle->finished != 0 ||
+					iter->s_handle->state == 4 || iter->s_handle->state == 5) // FINISHED / DESTROYED
 				{
-					if (iter->s_handle != NULL)
-					{
-						ga_handle_destroy(iter->s_handle);
-					}
 					iter = m_Handles.erase(iter);
 				}
 				else

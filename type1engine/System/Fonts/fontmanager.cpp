@@ -1,4 +1,5 @@
 #include "fontmanager.h"
+#include <string.h>
 
 namespace Engine
 {
@@ -13,12 +14,13 @@ namespace Engine
 
 		Font *FontManager::GetFont(const char *name, unsigned int size)
 		{
+			// name 是 const char*，必须按内容比较（== 比的是指针）
 			std::map<unsigned int, Font*>::iterator iter;
 			for (iter = m_Fonts.begin(); iter != m_Fonts.end(); ++iter)
 			{
-				if (name == iter->second->GetName() && size == iter->second->GetSize())
+				if (strcmp(name, iter->second->GetName()) == 0 && size == iter->second->GetSize())
 				{
-					return m_Fonts[iter->first];
+					return iter->second;
 				}
 			}
 			std::cout << "Cannot find font -> Name: " << name << " Size: " << size << std::endl;

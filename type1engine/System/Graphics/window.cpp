@@ -14,6 +14,10 @@ namespace Engine
 
 		void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 		{
+			if (key < 0 || key >= KEY_MAX)
+			{
+				return; // GLFW_KEY_UNKNOWN(-1) 等没有键位令牌的按键
+			}
 			Window *win = (Window*)glfwGetWindowUserPointer(window);
 			if (action != GLFW_RELEASE)
 			{
@@ -27,6 +31,10 @@ namespace Engine
 
 		void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 		{
+			if (button < 0 || button >= MOUSE_MAX)
+			{
+				return;
+			}
 			Window *win = (Window*)glfwGetWindowUserPointer(window);
 			if (action != GLFW_RELEASE)
 			{
